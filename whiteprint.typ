@@ -1,5 +1,7 @@
+#import "@preview/bullseye:0.1.0": *
 #import "@preview/diagraph:0.3.5"
 #import "@preview/theorion:0.4.0"
+
 
 // Custom corollary that is at the same counter depth as theorems etc.
 #let (
@@ -20,12 +22,20 @@
   show: _show-corollary
   theorion.set-inherited-levels(1)
 
+  // Basic styling
   set par(justify: true)
   set heading(
     numbering: "1.1",
     supplement: it => if it.depth == 1 [Chapter] else [Section],
   )
   show link: set text(fill: blue.darken(20%))
+
+  // HTML export
+  show math.equation.where(block: true): show-target(html: html.frame)
+  show math.equation.where(block: false): show-target(html: it => html.elem(
+    "span",
+    html.frame(it),
+  ))
 
   body
 }
@@ -39,7 +49,7 @@
 
 #let _elem(
   kind: none,
-  title: "",
+  title: none,
   lean: none,
   uses: (),
   statement,
@@ -57,10 +67,13 @@
     #metadata((
       kind: kind,
       title: title,
-      lean: lean,
-      uses: uses,
+      lean: str(lean),
+      uses: uses.map(str),
     )) <whiteprint-metadata>
-    #_elem-fns.at(kind)(title: title, statement) #lean
+    #_elem-fns.at(kind)(
+      title: if title == none { "" } else { title },
+      statement,
+    ) #lean
     #if proof != none { theorion.proof(proof) }
   ]
 }
