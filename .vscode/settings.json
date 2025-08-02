@@ -1,3 +1,8 @@
 {
-    "tinymist.exportTarget": "html"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[python]": { "editor.defaultFormatter": "charliermarsh.ruff" },
+  "[typst]": { "editor.defaultFormatter": "myriad-dreamin.tinymist" },
+
+  "tinymist.formatterProseWrap": true,
+  "tinymist.formatterPrintWidth": 80
 }
